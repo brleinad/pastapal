@@ -2,6 +2,8 @@
   import Timer from './lib/Timer.svelte';
   import SetTimer from './lib/SetTimer.svelte';
   import BarcodeScanner from './lib/BarcodeScanner.svelte';
+  import { get, set } from 'idb-keyval';
+
 
   import { timer } from './lib/stores';
 
@@ -16,26 +18,21 @@
   let state = STATES.SCAN; // TODO
   let barcode = '';
 
-  function getTimerForBarcode() {
-    // TODO
-    return false;
-  }
-
-  function handleBarcode(barcodeEvent) {
-    // TODO: check storage for pasta
+  async function handleBarcode(barcodeEvent) {
     barcode = barcodeEvent.detail;
-    console.log('BARCODE: ', barcode)
+    console.log(`BARCODE: "${barcode}"`)
 
-    const pastaFound = getTimerForBarcode();
-    if (pastaFound) {
+    const pastaTimer = await get(barcode);
+    if (pastaTimer) {
+      timer.set(pastaTimer);
       state = STATES.TIMER;
     } else {
       state = STATES.SET_TIMER;
     }
   }
 
-  function handleSetTimer() {
-    // TODO: save pasta with timer
+  async function handleSetTimer() {
+    await set(barcode, timerValue);
     state = STATES.TIMER;
     console.log('TIMER SET TO: ', timerValue)
   }
@@ -76,7 +73,7 @@
 		width: 1px;
 	}
 
-	div {
+	:global(div) {
     max-width: 300px;
     margin: 1rem auto;
     padding: 1rem;

@@ -2,13 +2,23 @@
   import { onMount } from 'svelte';
   import Quagga from 'quagga';
   import { createEventDispatcher } from 'svelte';
+  import { get, set } from 'idb-keyval';
 
   let error = false;
   let dispatch = createEventDispatcher();
   let barcode = '';
+  let attempts = 0;
+  const MAX_ATTEMPTS = 3;
 
-  function handleBarcode(barcodeEvent) {
-    if (barcodeEvent.codeResult.code) {
+  async function handleBarcode(barcodeEvent) {
+    console.log('BOB: ', barcodeEvent.codeResult)
+    const barcode = barcodeEvent.codeResult.code;
+    if (!barcode) {
+      return;
+    }
+    const pastaFound = await get(barcode);
+    attempts += 1;
+    if (attempts > MAX_ATTEMPTS || pastaFound) {
       Quagga.offDetected(handleBarcode);
       dispatch('scan', barcodeEvent.codeResult.code);
     }
