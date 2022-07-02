@@ -13,9 +13,9 @@ export default defineConfig({
       },
       includeAssets: ['public/favicon.ico', 'public/pastapal.icon-512.png'],
       manifest: {
-        name: 'My Awesome App',
-        short_name: 'MyApp',
-        description: 'My Awesome App description',
+        name: 'PastaPal',
+        short_name: 'PastaPal',
+        description: 'PastaPal',
         theme_color: '#ffffff',
         icons: [
           {
