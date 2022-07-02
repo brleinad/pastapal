@@ -19,7 +19,7 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'pastapa-icon-512.png',
+            src: 'pastapal-icon-512.png',
             sizes: '512x512',
             type: 'image/png'
           }
