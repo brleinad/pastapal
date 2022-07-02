@@ -58,3 +58,9 @@
 
 
 <div id="barcode-scanner"></div>
+
+<style>
+  :global(video) {
+      width: 100%;
+  }
+</style>
